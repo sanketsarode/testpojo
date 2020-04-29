@@ -8,8 +8,8 @@ import pojo.classes.Student;
 
 public class AppTest {
 
-    Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
-    String json;
+    private Gson gson = new Gson().newBuilder().setPrettyPrinting().create();
+    private String json;
 
     @Test
     public void toJson() {
@@ -97,6 +97,7 @@ public class AppTest {
                 "House#: " + addr.getHouseNumber() + "\n" +
                 "Street: " + addr.getStreet() + "\n" +
                 "State: " + addr.getState() + "\n" +
-                "Country: " + addr.getCountry());
+                "Country: " + addr.getCountry() + "\n" +
+                "ZipCode: " + addr.getZip_code());
     }
 }
