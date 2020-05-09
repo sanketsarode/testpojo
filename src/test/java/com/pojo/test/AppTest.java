@@ -1,10 +1,18 @@
 package com.pojo.test;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 import pojo.classes.Address;
 import pojo.classes.Employee;
+import pojo.classes.Sample;
 import pojo.classes.Student;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class AppTest {
 
@@ -99,5 +107,49 @@ public class AppTest {
                 "State: " + addr.getState() + "\n" +
                 "Country: " + addr.getCountry() + "\n" +
                 "ZipCode: " + addr.getZip_code());
+    }
+
+    @Test
+    public void usingJsonFileSerialize() throws Exception {
+        System.out.println("USING JSON FILE - SERIALIZE");
+        Writer w = new FileWriter(System.getProperty("user.dir") + "\\src\\test\\resources\\test.json", false);
+        Sample[] users = new Sample[]{
+                new Sample("vuw", "uvw"),
+                new Sample("qrt", "qrt")
+        };
+        gson.toJson(users, w);
+        w.close();
+    }
+
+    @Test
+    public void usingJsonFileDeSerialize_using_ArrayOfObjects() {
+        System.out.println("USING JSON FILE - DESERIALIZE - using array of objects");
+
+        try {
+            Sample[] s = gson.fromJson(new FileReader(System.getProperty("user.dir") + "\\src\\test\\resources\\Sample.json"), Sample[].class);
+            for (Sample sam : s) {
+                System.out.println("Username: " + sam.getUsername());
+                System.out.println("Password: " + sam.getPassword());
+            }
+        } catch (Exception e) {
+            System.out.println("Exception is reading file: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void usingJsonFileDeSerialize_using_ListOfObjects() {
+        System.out.println("USING JSON FILE - DESERIALIZE - using list of objects");
+
+        try {
+            Type userList = new TypeToken<ArrayList<Sample>>() {
+            }.getType();
+            ArrayList<Sample> s = gson.fromJson(new FileReader(System.getProperty("user.dir") + "\\src\\test\\resources\\Sample.json"), userList);
+            for (Sample sam : s) {
+                System.out.println("Username: " + sam.getUsername());
+                System.out.println("Password: " + sam.getPassword());
+            }
+        } catch (Exception e) {
+            System.out.println("Exception is reading file: " + e.getMessage());
+        }
     }
 }
